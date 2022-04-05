@@ -22,8 +22,8 @@ namespace TimeTracker.Services.Implementations
 
         public async Task<List<TimeTrackingDto>> GetTimeTrackingsByEmployeeId(Guid employeeId)
         {
-            var timeTrackings = await _timeTrackingRepository.GetAllByEmployeeIdAsync(employeeId);
-            var result = _mapper.Map<List<TimeTrackingDto>>(timeTrackings);
+            var trackedTimes = await _timeTrackingRepository.GetAllByEmployeeIdAsync(employeeId);
+            var result = _mapper.Map<List<TimeTrackingDto>>(trackedTimes);
 
             return result;
         }
