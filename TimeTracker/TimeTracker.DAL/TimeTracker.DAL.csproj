@@ -19,11 +19,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Context\" />
-    <Folder Include="Entities\" />
-    <Folder Include="Extensions\" />
-    <Folder Include="Repositories\" />
-  </ItemGroup>
-
 </Project>
