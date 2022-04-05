@@ -1,0 +1,14 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/TimeTracker/TimeTracker.DAL/bin/Debug/net6.0
+/TimeTracker/TimeTracker.DAL/obj
+/TimeTracker/TimeTracker.IoC/bin/Debug/net6.0
+/TimeTracker/TimeTracker.IoC/obj/Debug/net6.0
+/TimeTracker/TimeTracker.IoC/obj
+/TimeTracker/TimeTracker.MVC/bin/Debug/net6.0
+/TimeTracker/TimeTracker.MVC/obj
+/TimeTracker/TimeTracker.Services/bin/Debug/net6.0
+/TimeTracker/TimeTracker.Services/obj
