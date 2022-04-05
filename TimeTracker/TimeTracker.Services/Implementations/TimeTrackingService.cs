@@ -34,7 +34,7 @@ namespace TimeTracker.Services.Implementations
             var job = await _jobService.GetByIdAsync(jobId);
             TimeSpan interval = endTime - startTime;
 
-            var timeTracking = new TimeTrackingDto()
+            var trackedTime = new TimeTrackingDto()
             {
                 StartTime = startTime,
                 EndTime = endTime,
@@ -44,8 +44,8 @@ namespace TimeTracker.Services.Implementations
                 JobId = job.Id
             };
 
-            var timeTrackingToCreate = _mapper.Map<TimeTracking>(timeTracking);
-            await _timeTrackingRepository.CreateAsync(timeTrackingToCreate);
+            var trackedTimeToCreate = _mapper.Map<TimeTracking>(trackedTime);
+            await _timeTrackingRepository.CreateAsync(trackedTimeToCreate);
 
             return employeeId;
         }
@@ -53,22 +53,22 @@ namespace TimeTracker.Services.Implementations
         public async Task<double> CalculateEarningsForTimeInterval(Guid employeeId, Guid? jobId, DateTime startTime, DateTime endTime)
         {
             double totalEarnings = 0;
-            IEnumerable<TimeTracking> timeTrackings;
+            IEnumerable<TimeTracking> trackedTimes;
 
             if (jobId == Guid.Empty)
             {
-                timeTrackings = await _timeTrackingRepository.GetAllByEmployeeIdAsync(employeeId);
+                trackedTimes = await _timeTrackingRepository.GetAllByEmployeeIdAsync(employeeId);
             }
             else
             {
-                timeTrackings = await _timeTrackingRepository.GetAllByEmployeeIdAndJobIdAsync(employeeId, (Guid)jobId);
+                trackedTimes = await _timeTrackingRepository.GetAllByEmployeeIdAndJobIdAsync(employeeId, (Guid)jobId);
             }
 
-            foreach (var timeTracking in timeTrackings)
+            foreach (var trackedTime in trackedTimes)
             {
-                if (timeTracking.StartTime >= startTime && timeTracking.EndTime <= endTime)
+                if (trackedTime.StartTime >= startTime && trackedTime.EndTime <= endTime)
                 {
-                    totalEarnings = totalEarnings + timeTracking.TotalCost;
+                    totalEarnings = totalEarnings + trackedTime.TotalCost;
                 }
             }
 

@@ -1,0 +1,52 @@
+﻿@model JobDetailsViewModel
+
+@{
+    ViewData["Title"] = "Job details";
+}
+
+<div class="card">
+    <div class="card-header d-flex flex-row justify-content-between">
+        <h5>@Model.Job.Title</h5>
+        <text>Hourly rate: @Model.Job.HourlyRate $</text>
+    </div>
+    <div class="card-body">
+        <p class="card-text">@Model.Job.Description</p>
+        <div class="row">
+            <div class="col-md-6 border p-3 text-center">
+                <h6>Available Employees</h6>
+                <ul class="list-group">
+                    @foreach (var employee in Model.EmployeesToAdd)
+                    {
+                        <form method="post" asp-controller="Job" asp-action="AddEmployeeToJob">
+                            <input asp-for="EmployeeToAddId" type="hidden" value="@employee.Id" />
+                            <input asp-for="Job.Id" type="hidden" />
+                        <li class="list-group-item d-flex justify-content-between align-items-center mt-1">
+                                @employee.FirstName @employee.LastName
+                            <button type="submit" class="btn btn-success btn-sm">Add</button>
+                        </li>
+                        </form>
+                    }
+                </ul>
+            </div>
+            <div class="col-md-6 border p-3 text-center">
+                <h6>Active Employees</h6>
+                <ul class="list-group">
+                    @foreach (var employee in Model.Job.Employees)
+                    {
+                        <form method="post" asp-controller="Job" asp-action="RemoveEmployeeFromJob">
+                            <input asp-for="EmployeeToRemoveId" type="hidden" value="@employee.Id" />
+                            <input asp-for="Job.Id" type="hidden" />
+                        <li class="list-group-item d-flex justify-content-between align-items-center mt-1">
+                                @employee.FirstName @employee.LastName
+                            <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                        </li>
+                        </form>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer d-flex flex-row justify-content-end">
+        <a asp-controller="Job" asp-action="ManageJobs" class="btn btn-primary btn-sm">Go back</a>
+    </div>
+</div>

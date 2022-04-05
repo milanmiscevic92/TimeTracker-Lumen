@@ -1,0 +1,33 @@
+﻿@model JobCreateViewModel
+
+@{
+    ViewData["Title"] = "Create job";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                Create new job
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Enter job details</h5>
+                <form asp-controller="Job" asp-action="Create" method="post">
+                    <div class="form-group mt-3">
+                        <label for="jobTitle">Title</label>
+                        <input asp-for="Job.Title" type="text" class="form-control" id="jobTitle" placeholder="Enter job title">
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="jobDescription">Description</label>
+                        <textarea asp-for="Job.Description" type="text" class="form-control" id="jobDescription" placeholder="Enter job description"></textarea>
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="hourlyRate">Hourly Rate</label>
+                        <input asp-for="Job.HourlyRate" type="text" class="form-control" id="hourlyRate" placeholder="Enter job hourly rate">
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-3">Create</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

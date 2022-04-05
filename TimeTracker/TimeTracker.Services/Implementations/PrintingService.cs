@@ -18,7 +18,7 @@ namespace TimeTracker.Services.Implementations
 
         public async Task<PdfDocumentDto> PrintAsPdf(Guid employeeId)
         {
-            var timeTrackings = await _timeTrackingService.GetTimeTrackingsByEmployeeId(employeeId);
+            var trackedTimes = await _timeTrackingService.GetTimeTrackingsByEmployeeId(employeeId);
             var employee = await _employeeService.GetByIdAsync(employeeId);
             var pdfDocument = new PdfDocumentDto();
             var document = new PdfDocument();
@@ -37,7 +37,7 @@ namespace TimeTracker.Services.Implementations
             double x = 20;
             double y = 50;
 
-            foreach (var trackedTime in timeTrackings)
+            foreach (var trackedTime in trackedTimes)
             {
                 string startTime = trackedTime.StartTime.ToString("dddd, dd MMMM yyyy HH:mm:ss");
                 string endTime = trackedTime.EndTime.ToString("dddd, dd MMMM yyyy HH:mm:ss");

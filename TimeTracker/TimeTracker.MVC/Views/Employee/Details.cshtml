@@ -1,0 +1,115 @@
+﻿@model EmployeeDetailsViewModel
+
+@{
+    ViewData["Title"] = "Job details";
+}
+
+<div class="row h-100">
+    <div class="col-md-12 h-100">
+        <div class="card h-100">
+            <div class="card-header d-flex flex-row justify-content-between">
+                <h5>@Model.Employee.FirstName @Model.Employee.LastName</h5>
+                @if (Model.TotalEarnings != null)
+                {
+                    <div class="text-success"> Calculated earnings: @Model.TotalEarnings$ </div>
+                }
+            </div>
+            <div class="card-body">
+                @if (Model.TrackedTimes.Count() > 0)
+                {
+                    <h5 class="text-center bm-3">Employee time trackings</h5>
+                    foreach (var trackedTime in Model.TrackedTimes)
+                    {
+                        <div class="row border p-2 mt-3">
+                            <div class="col-md-12">
+                                <div class="d-flex flex-row justify-content-between mb-2">
+
+                                    @if (Model.Employee.Jobs.Where(x => x.Id == trackedTime.JobId).Any())
+                                    {
+                                        <div class="text-success">Job: @trackedTime.Job.Title - Currently employed on this job.</div>
+                                        <div class="text-success">Hourly rate: @trackedTime.Job.HourlyRate$</div>
+                                    }
+                                    else
+                                    {
+                                        <div class="text-danger">Job: @trackedTime.Job.Title - No longer employed on this job.</div>
+                                        <div class="text-danger">Hourly rate: @trackedTime.Job.HourlyRate$</div>
+                                    }
+
+                                </div>
+                            </div>
+                            <div class="card w-100 mt-2">
+                                <div class="card-body">
+                                    <h6 class="card-title">@trackedTime.StartTime.ToString("dddd, dd MMMM yyyy HH:mm:ss") - @trackedTime.EndTime.ToString("dddd, dd MMMM yyyy HH:mm:ss")</h6>
+                                    <text class="card-text">Total hours: @Math.Round(trackedTime.TotalHours, 3)h</text>
+                                    <br />
+                                    <text class="card-text">Total earnings:  @Math.Round(trackedTime.TotalCost, 3)$</text>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    <form method="post" asp-controller="Employee" asp-action="PrintEmployeeDetails" asp-route-employeeId="@Model.Employee.Id">
+                    <button type="submit" class="btn btn-success btn-sm mt-2">Print to PDF</button>
+                    </form>
+                }
+            </div>
+            <div class="card-footer">
+                <div class="d-flex flex-row justify-content-between">
+                    <!-- Add new time -->
+                    <div class="d-flex flex-column">
+                        <h6 class="text-center"> Add new time</h6>
+                        <form method="post" asp-controller="Employee" asp-action="AddTrackedTime">
+                            <input asp-for="Employee.Id" type="hidden" />
+                            <div class="d-flex flex-row justify-content-between form-text">
+                                <div class="d-flex flex-column">
+                                    <div class="d-flex flex-row justify-content-between">
+                                        <label for="jobs">Choose a job:</label>
+                                        <select asp-for="SelectedJobId" asp-items="Model.Jobs" class="ms-2 d-flex flex-grow-1"></select>
+                                    </div>
+                                    <div class="d-flex justify-content-around mt-2">
+                                        <label for="startTime">Start time:</label>
+                                        <input asp-for="SelectedStartTime" type="datetime-local" class="ms-2">
+                                    </div>
+                                    <div class="d-flex justify-content-around mt-2">
+                                        <label for="endTime">End time:</label>
+                                        <input asp-for="SelectedEndTime" type="datetime-local" class="ms-2">
+                                    </div>
+                                    <button type="submit" class="btn btn-success btn-sm mt-2">Add</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- Calculate time for specific job during interval -->
+                    <div class="d-flex flex-column">
+                        <h6 class="text-center"> Calculate earinings for time interval</h6>
+                        <form method="post" asp-controller="Employee" asp-action="CalculateEariningsForTimeInterval">
+                            <input asp-for="Employee.Id" type="hidden" />
+                            <div class="d-flex flex-row justify-content-between form-text">
+                                <div class="d-flex flex-column">
+                                    <div class="d-flex flex-row justify-content-between">
+                                        <label for="jobs">Choose a job:</label>
+                                        <select asp-for="SelectedJobId" asp-items="Model.Jobs" class="ms-2 d-flex flex-grow-1">
+                                            <option>All jobs</option>
+                                        </select>
+                                    </div>
+                                    <div class="d-flex justify-content-around mt-2">
+                                        <label for="startTime">Start time:</label>
+                                        <input asp-for="SelectedStartTime" type="datetime-local" class="ms-2">
+                                    </div>
+                                    <div class="d-flex justify-content-around mt-2">
+                                        <label for="endTime">End time:</label>
+                                        <input asp-for="SelectedEndTime" type="datetime-local" class="ms-2">
+                                    </div>
+                                    <button type="submit" class="btn btn-success btn-sm mt-2">Calculate</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+

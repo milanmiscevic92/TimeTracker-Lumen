@@ -18,25 +18,25 @@ namespace TimeTracker.DAL.Repositories.Implementations
         {
             try
             {
-                var timeTrackingsQuery = _context.Set<TimeTracking>().AsQueryable();
+                var trackedTimesQuery = _context.Set<TimeTracking>().AsQueryable();
 
                 if (includeEmployee)
                 {
-                    timeTrackingsQuery = timeTrackingsQuery.Include(x => x.Employee);
+                    trackedTimesQuery = trackedTimesQuery.Include(x => x.Employee);
                 }
 
                 if (includeJob)
                 {
-                    timeTrackingsQuery = timeTrackingsQuery.Include(x => x.Job);
+                    trackedTimesQuery = trackedTimesQuery.Include(x => x.Job);
                 }
 
-                var timeTrackings = await timeTrackingsQuery.AsNoTracking().ToListAsync();
+                var trackedTimes = await trackedTimesQuery.AsNoTracking().ToListAsync();
 
-                return timeTrackings;
+                return trackedTimes;
             }
             catch (Exception ex)
             {
-                throw new Exception($"Unable to retrieve time trackings: {ex.Message}");
+                throw new Exception($"Unable to retrieve tracked times: {ex.Message}");
             }
         }
 
@@ -44,30 +44,30 @@ namespace TimeTracker.DAL.Repositories.Implementations
         {
             try
             {
-                var timeTrackingQuery = _context.Set<TimeTracking>().AsQueryable();
+                var trackedTimeQuery = _context.Set<TimeTracking>().AsQueryable();
 
                 if (includeEmployee)
                 {
-                    timeTrackingQuery = timeTrackingQuery.Include(x => x.Employee);
+                    trackedTimeQuery = trackedTimeQuery.Include(x => x.Employee);
                 }
 
                 if (includeJob)
                 {
-                    timeTrackingQuery = timeTrackingQuery.Include(x => x.Job);
+                    trackedTimeQuery = trackedTimeQuery.Include(x => x.Job);
                 }
 
-                var timeTracking = await timeTrackingQuery.AsNoTracking().Where(x => x.Id == id).FirstOrDefaultAsync();
+                var trackedTime = await trackedTimeQuery.AsNoTracking().Where(x => x.Id == id).FirstOrDefaultAsync();
 
-                if (timeTracking == null)
+                if (trackedTime == null)
                 {
-                    throw new Exception($"Unable to find time tracking with id={id}");
+                    throw new Exception($"Unable to find tracked time with id={id}");
                 }
 
-                return timeTracking;
+                return trackedTime;
             }
             catch (Exception ex)
             {
-                throw new Exception($"Unable to retrieve time tracking with id={id}: {ex.Message}");
+                throw new Exception($"Unable to retrieve tracked time with id={id}: {ex.Message}");
             }
         }
 
@@ -75,7 +75,7 @@ namespace TimeTracker.DAL.Repositories.Implementations
         {
             try
             {
-                var timeTrackings = await _context
+                var trackedTimes = await _context
                     .Set<TimeTracking>()
                     .Include(x => x.Employee)
                     .Include(x => x.Job)
@@ -83,16 +83,16 @@ namespace TimeTracker.DAL.Repositories.Implementations
                     .Where(x => x.EmployeeId == employeeId)
                     .ToListAsync();
 
-                if (timeTrackings == null)
+                if (trackedTimes == null)
                 {
-                    throw new Exception($"Unable to find time trackings for employee {employeeId}");
+                    throw new Exception($"Unable to find tracked times for employee {employeeId}");
                 }
 
-                return timeTrackings;
+                return trackedTimes;
             }
             catch (Exception ex)
             {
-                throw new Exception($"Unable to retrieve time trackings for employee {employeeId}: {ex.Message}");
+                throw new Exception($"Unable to retrieve tracked times for employee {employeeId}: {ex.Message}");
             }
         }
 
@@ -100,84 +100,84 @@ namespace TimeTracker.DAL.Repositories.Implementations
         {
             try
             {
-                var timeTrackings = await _context
+                var trackedTimes = await _context
                     .Set<TimeTracking>()
                     .AsNoTracking()
                     .Where(x => x.EmployeeId == employeeId && x.JobId == jobId)
                     .ToListAsync();
 
-                if (timeTrackings == null)
+                if (trackedTimes == null)
                 {
-                    throw new Exception($"Unable to find time trackings for employee {employeeId} and job {jobId}");
+                    throw new Exception($"Unable to find tracked times for employee {employeeId} and job {jobId}");
                 }
 
-                return timeTrackings;
+                return trackedTimes;
             }
             catch (Exception ex)
             {
-                throw new Exception($"Unable to retrieve time trackings for employee {employeeId} and job {jobId}: {ex.Message}");
+                throw new Exception($"Unable to retrieve tracked times for employee {employeeId} and job {jobId}: {ex.Message}");
             }
         }
 
-        public async Task<TimeTracking> CreateAsync(TimeTracking timeTracking)
+        public async Task<TimeTracking> CreateAsync(TimeTracking trackedTime)
         {
-            if (timeTracking == null)
+            if (trackedTime == null)
             {
-                throw new ArgumentNullException(nameof(timeTracking));
+                throw new ArgumentNullException(nameof(trackedTime));
             }
 
             try
             {
-                await _context.Set<TimeTracking>().AddAsync(timeTracking);
+                await _context.Set<TimeTracking>().AddAsync(trackedTime);
                 await _context.SaveChangesAsync();
 
-                return timeTracking;
+                return trackedTime;
             }
             catch (Exception ex)
             {
-                throw new Exception($"Unable to save a time tracking: {ex.Message}");
+                throw new Exception($"Unable to save tracked time: {ex.Message}");
             }
         }
 
-        public async Task<TimeTracking> UpdateAsync(TimeTracking timeTracking)
+        public async Task<TimeTracking> UpdateAsync(TimeTracking trackedTime)
         {
-            if (timeTracking == null)
+            if (trackedTime == null)
             {
-                throw new ArgumentNullException(nameof(timeTracking));
+                throw new ArgumentNullException(nameof(trackedTime));
             }
 
             try
             {
-                _context.Set<TimeTracking>().Update(timeTracking);
+                _context.Set<TimeTracking>().Update(trackedTime);
                 await _context.SaveChangesAsync();
 
-                return timeTracking;
+                return trackedTime;
             }
             catch (Exception ex)
             {
-                throw new Exception($"Unable to update a time tracking: {ex.Message}");
+                throw new Exception($"Unable to update tracked time: {ex.Message}");
             }
         }
 
         public async Task<bool> DeleteAsync(Guid id)
         {
-            var timeTracking = await _context.Set<TimeTracking>().FindAsync(id);
+            var trackedTime = await _context.Set<TimeTracking>().FindAsync(id);
 
-            if (timeTracking == null)
+            if (trackedTime == null)
             {
-                throw new Exception($"Unable to find a time tracking.");
+                throw new Exception($"Unable to find tracked time.");
             }
 
             try
             {
-                _context.Set<TimeTracking>().Remove(timeTracking);
+                _context.Set<TimeTracking>().Remove(trackedTime);
                 await _context.SaveChangesAsync();
 
                 return true;
             }
             catch (Exception ex)
             {
-                throw new Exception($"Unable to remove a time tracking: {ex.Message}");
+                throw new Exception($"Unable to remove tracked time: {ex.Message}");
             }
         }
     }

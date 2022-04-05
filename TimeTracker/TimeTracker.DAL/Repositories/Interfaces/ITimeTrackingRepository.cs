@@ -12,9 +12,9 @@ namespace TimeTracker.DAL.Repositories.Interfaces
 
         public Task<IEnumerable<TimeTracking>> GetAllByEmployeeIdAndJobIdAsync(Guid employeeId, Guid jobId);
 
-        public Task<TimeTracking> CreateAsync(TimeTracking timeTracking);
+        public Task<TimeTracking> CreateAsync(TimeTracking trackedTime);
 
-        public Task<TimeTracking> UpdateAsync(TimeTracking timeTracking);
+        public Task<TimeTracking> UpdateAsync(TimeTracking trackedTime);
 
         public Task<bool> DeleteAsync(Guid id);
     }

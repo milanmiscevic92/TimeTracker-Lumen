@@ -1,7 +1,22 @@
+using System.Reflection;
+using TimeTracker.IoC;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services
+    .AddRazorPages()
+    .AddRazorRuntimeCompilation();
+
+builder.Services.AddAutoMapper(new Assembly[]
+{
+    typeof(TimeTracker.Services.Configuration.Mapping.Profiles.JobProfile).Assembly,
+    typeof(TimeTracker.Services.Configuration.Mapping.Profiles.EmployeeProfile).Assembly,
+    typeof(TimeTracker.Services.Configuration.Mapping.Profiles.TimeTrackingProfile).Assembly
+});
+
 builder.Services.AddControllersWithViews();
+builder.Services.AddTimeTrackerServices();
 
 var app = builder.Build();
 

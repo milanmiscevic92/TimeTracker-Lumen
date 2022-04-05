@@ -11,6 +11,6 @@ namespace TimeTracker.DAL.Context
 
         public DbSet<Employee> Employees { get; set; }
 
-        public DbSet<TimeTracking> TimeTrackings { get; set; }
+        public DbSet<TimeTracking> TrackedTimes { get; set; }
     }
 }
